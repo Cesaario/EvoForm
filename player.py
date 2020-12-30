@@ -4,7 +4,7 @@ from scenario import platforms
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, ai):
         super().__init__()
         self.surf = pygame.Surface((30, 30))
         self.surf.fill((255, 0, 0))
@@ -14,17 +14,26 @@ class Player(pygame.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
 
-    def move(self):
+        self.ai = ai
+
+    def move_player(self):
         self.acc = vec(0, GRAV)
 
         pressed_keys = pygame.key.get_pressed()
-
         if pressed_keys[K_LEFT]:
             self.acc.x = -ACC
         if pressed_keys[K_RIGHT]:
             self.acc.x = +ACC
         if pressed_keys[K_UP]:
             self.jump()
+
+        self.move()
+
+    def move_computer(self):
+        self.acc = vec(1, GRAV)
+        self.move()
+
+    def move(self):
 
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
