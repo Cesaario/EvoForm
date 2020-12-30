@@ -44,6 +44,9 @@ class Player(pygame.sprite.Sprite):
         if self.pos.x < 0:
             self.pos.x = 0
 
+        if self.pos.y > HEIGHT:
+            self.death()
+
         self.rect.midbottom = self.pos
 
     def update(self):
@@ -56,3 +59,6 @@ class Player(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, platforms, False)
         if hits:
             self.vel.y = JUMP
+
+    def death(self):
+        self.pos = vec((10, 385))
