@@ -1,7 +1,7 @@
 import sys
 from constants import *
 from player import Player
-from scenario import Platform1
+from scenario import platforms_array
 from pygame.locals import *
 
 status = pygame.init()
@@ -16,10 +16,11 @@ FramesPerSecond = pygame.time.Clock()
 display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("EvoForm")
 
-Player1 = Player(True)
+Player1 = Player(False)
 
 all_sprites = pygame.sprite.Group()
-all_sprites.add(Platform1)
+for platform in platforms_array:
+    all_sprites.add(platform)
 all_sprites.add(Player1)
 
 while True:
