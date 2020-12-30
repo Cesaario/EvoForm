@@ -6,5 +6,6 @@ GRAV = 0.5
 FPS = 60
 ACC = 0.5
 FRIC = -0.12
-JUMP = -10
+JUMP = -13
+ALTURA_PLAT = 20
 vec = pygame.math.Vector2
