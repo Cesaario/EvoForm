@@ -8,7 +8,10 @@ def gerar_dimensao(x, y, largura):
 platforms_array = []
 
 platforms_array.append(Platform(gerar_dimensao(0, 0, 200)))
-platforms_array.append(Platform(gerar_dimensao(300, 100, 100)))
+platforms_array.append(Platform(gerar_dimensao(275, 100, 100)))
+platforms_array.append(Platform(gerar_dimensao(50, 200, 100)))
+platforms_array.append(Platform(gerar_dimensao(200, 325, 400)))
+platforms_array.append(Platform(gerar_dimensao(700, 400, 100)))
 
 platforms = pygame.sprite.Group()
 for platform in platforms_array:
