@@ -37,5 +37,4 @@ while True:
     pygame.display.update()
     FramesPerSecond.tick(FPS)
 
-    Player1.move_computer() if Player1.ai else Player1.move_player();
     Player1.update()
