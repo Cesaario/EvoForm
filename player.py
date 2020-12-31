@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect(center=(100, 50))
 
-        self.pos = vec(10, 385)
+        self.rect.bottomleft = vec((10, 385))
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
 
@@ -20,22 +20,21 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         pressed_keys = pygame.key.get_pressed()
-        self.acc = vec(0, 0)
+
+        self.vel.x = 0
 
         if pressed_keys[K_UP] and self.on_ground:
             self.jump()
         if pressed_keys[K_LEFT]:
-            self.acc.x = -ACC
+            self.vel.x = -ACC
         if pressed_keys[K_RIGHT]:
-            self.acc.x = +ACC
+            self.vel.x = +ACC
 
         if not self.on_ground:
-            self.acc.y = GRAV
+            self.vel.y += GRAV
+            print(self.vel.y)
             if self.vel.y > MAX_GRAV:
                 self.vel.y = MAX_GRAV
-
-        self.acc.x += self.vel.x * FRIC
-        self.vel += self.acc
 
         self.rect.left += self.vel.x
         self.handle_collision(HORIZONTAL)
@@ -44,11 +43,11 @@ class Player(pygame.sprite.Sprite):
         self.on_ground = False
         self.handle_collision(VERTICAL)
 
-        if self.pos.x > WIDTH:
-            self.pos.x = WIDTH
-        if self.pos.x < 0:
-            self.pos.x = 0
-        if self.pos.y > HEIGHT:
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.top > HEIGHT:
             self.death()
 
     def handle_collision(self, direction):
@@ -67,10 +66,7 @@ class Player(pygame.sprite.Sprite):
                     self.rect.top = platform.rect.bottom
 
     def jump(self):
-        if self.on_ground:
-            self.vel.y = JUMP
-            self.on_ground = False
-
+        self.vel.y -= JUMP
 
     def death(self):
-        self.pos = vec((10, 385))
+        self.rect.bottomleft = vec((10, 385))
