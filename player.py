@@ -6,7 +6,7 @@ from scenario import platforms, platforms_array
 class Player(pygame.sprite.Sprite):
     on_ground = False
 
-    def __init__(self, ai):
+    def __init__(self, ai, ai_moves=None):
         super().__init__()
         self.surf = pygame.Surface((30, 30))
         self.surf.fill((255, 0, 0))
@@ -17,22 +17,24 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0, 0)
 
         self.ai = ai
+        self.ai_moves = [2, 2, 2, 3, 2, 2, 1, 1]
+        self.ai_move = 0
+        self.time = 0
 
     def update(self):
         pressed_keys = pygame.key.get_pressed()
 
         self.vel.x = 0
 
-        if pressed_keys[K_UP] and self.on_ground:
+        if (pressed_keys[K_UP] or self.ai_movement() == JUMP_MOVE) and self.on_ground:
             self.jump()
-        if pressed_keys[K_LEFT]:
+        if pressed_keys[K_LEFT] or self.ai_movement() == LEFT_MOVE:
             self.vel.x = -ACC
-        if pressed_keys[K_RIGHT]:
+        if pressed_keys[K_RIGHT] or self.ai_movement() == RIGHT_MOVE:
             self.vel.x = +ACC
 
         if not self.on_ground:
             self.vel.y += GRAV
-            print(self.vel.y)
             if self.vel.y > MAX_GRAV:
                 self.vel.y = MAX_GRAV
 
@@ -70,3 +72,12 @@ class Player(pygame.sprite.Sprite):
 
     def death(self):
         self.rect.bottomleft = vec((10, 385))
+
+    def ai_movement(self):
+        if self.ai and self.ai_move < len(self.ai_moves):
+            return self.ai_moves[self.ai_move]
+        return False
+
+    def set_time(self, time):
+        self.time = time
+        self.ai_move = int(self.time / MOVE_DURATION)

@@ -16,12 +16,15 @@ FramesPerSecond = pygame.time.Clock()
 display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("EvoForm")
 
-Player1 = Player(False)
+Player1 = Player(True)
 
 all_sprites = pygame.sprite.Group()
 for platform in platforms_array:
     all_sprites.add(platform)
 all_sprites.add(Player1)
+
+frames = 0
+seconds = 0
 
 while True:
     for event in pygame.event.get():
@@ -37,4 +40,10 @@ while True:
     pygame.display.update()
     FramesPerSecond.tick(FPS)
 
+    frames += 1
+    seconds = frames / FPS
+
+    Player1.set_time(seconds)
     Player1.update()
+
+    print(Player1.ai_move)
