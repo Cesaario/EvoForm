@@ -1,8 +1,10 @@
 import sys
+
+from pygame.locals import *
+
 from constants import *
 from player import Player
-from scenario import platforms_array
-from pygame.locals import *
+from scenario import platforms_array, goal
 
 status = pygame.init()
 if status[1] > 0:
@@ -16,12 +18,18 @@ FramesPerSecond = pygame.time.Clock()
 display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("EvoForm")
 
-Player1 = Player(True)
+players = []
+for i in range(10):
+    # ai_player = Player(True)
+    players.append(Player(False))
 
 all_sprites = pygame.sprite.Group()
 for platform in platforms_array:
     all_sprites.add(platform)
-all_sprites.add(Player1)
+all_sprites.add(goal)
+
+for ai_player in players:
+    all_sprites.add(ai_player)
 
 frames = 0
 seconds = 0
@@ -35,6 +43,8 @@ while True:
     display_surface.fill((51, 51, 51))
 
     for entity in all_sprites:
+        if isinstance(entity, Player) and entity.dead:
+            continue
         display_surface.blit(entity.surf, entity.rect)
 
     pygame.display.update()
@@ -43,7 +53,6 @@ while True:
     frames += 1
     seconds = frames / FPS
 
-    Player1.set_time(seconds)
-    Player1.update()
-
-    print(Player1.ai_move)
+    for ai_player in players:
+        ai_player.set_time(seconds)
+        ai_player.update()

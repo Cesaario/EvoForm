@@ -3,7 +3,7 @@ import random
 from pygame.locals import *
 
 from constants import *
-from scenario import platforms_array
+from scenario import platforms_array, goal
 
 
 class Player(pygame.sprite.Sprite):
@@ -20,11 +20,16 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0, 0)
 
         self.ai = ai
-        self.ai_moves = self.generate_moves(10)
+        self.ai_moves = self.generate_moves(20)
         self.ai_move = 0
         self.time = 0
+        self.dead = False
 
     def update(self):
+
+        if self.dead:
+            return
+
         pressed_keys = pygame.key.get_pressed()
 
         self.vel.x = 0
@@ -56,6 +61,9 @@ class Player(pygame.sprite.Sprite):
             self.death()
 
     def handle_collision(self, direction):
+        goal_collision = self.rect.collidelistall([goal])
+        if goal_collision:
+            print("GOAL")
         for platform in [platforms_array[i] for i in self.rect.collidelistall(platforms_array)]:
             if direction == HORIZONTAL:
                 if self.vel.x > 0:
@@ -75,6 +83,7 @@ class Player(pygame.sprite.Sprite):
 
     def death(self):
         self.rect.bottomleft = vec((10, 385))
+        self.dead = True
 
     def ai_movement(self):
         if self.ai and self.ai_move < len(self.ai_moves):
