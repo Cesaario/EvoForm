@@ -1,6 +1,9 @@
+import random
+
 from pygame.locals import *
+
 from constants import *
-from scenario import platforms, platforms_array
+from scenario import platforms_array
 
 
 class Player(pygame.sprite.Sprite):
@@ -17,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0, 0)
 
         self.ai = ai
-        self.ai_moves = [5,5,5,4,4,4,4,5,5,5,5]
+        self.ai_moves = self.generate_moves(10)
         self.ai_move = 0
         self.time = 0
 
@@ -26,7 +29,7 @@ class Player(pygame.sprite.Sprite):
 
         self.vel.x = 0
 
-        if (pressed_keys[K_UP] or self.ai_movement() == JUMP_MOVE or self.ai_movement() == LEFT_JUMP_MOVE or self.ai_movement() == RIGHT_JUMP_MOVE) and self.on_ground:
+        if (pressed_keys[K_UP] or self.ai_movement() >= JUMP_MOVE) and self.on_ground:
             self.jump()
         if pressed_keys[K_LEFT] or self.ai_movement() == LEFT_MOVE or self.ai_movement() == LEFT_JUMP_MOVE:
             self.vel.x = -ACC
@@ -81,3 +84,9 @@ class Player(pygame.sprite.Sprite):
     def set_time(self, time):
         self.time = time
         self.ai_move = int(self.time / MOVE_DURATION)
+
+    def generate_moves(self, number_of_moves):
+        moves = []
+        for i in range(number_of_moves):
+            moves.append(random.randint(1, 5))
+        return moves
