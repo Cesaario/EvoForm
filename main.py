@@ -20,8 +20,8 @@ pygame.display.set_caption("EvoForm")
 
 players = []
 for i in range(10):
-    # ai_player = Player(True)
-    players.append(Player(False))
+    ai_player = Player(True)
+    players.append(ai_player)
 
 all_sprites = pygame.sprite.Group()
 for platform in platforms_array:

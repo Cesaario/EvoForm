@@ -30,6 +30,8 @@ class Player(pygame.sprite.Sprite):
         if self.dead:
             return
 
+        print(self.calculate_fitness())
+
         pressed_keys = pygame.key.get_pressed()
 
         self.vel.x = 0
@@ -99,3 +101,7 @@ class Player(pygame.sprite.Sprite):
         for i in range(number_of_moves):
             moves.append(random.randint(1, 5))
         return moves
+
+    def calculate_fitness(self):
+        player_pos = vec(self.rect.center)
+        return player_pos.distance_to(vec(goal.rect.center))
