@@ -30,8 +30,6 @@ class Player(pygame.sprite.Sprite):
         if self.dead:
             return
 
-        print(self.calculate_fitness())
-
         pressed_keys = pygame.key.get_pressed()
 
         self.vel.x = 0
@@ -105,3 +103,23 @@ class Player(pygame.sprite.Sprite):
     def calculate_fitness(self):
         player_pos = vec(self.rect.center)
         return player_pos.distance_to(vec(goal.rect.center))
+
+    def crossover(self, parent):
+        moves_length = len(self.ai_moves)
+        crossover_indexes = random.sample(range(moves_length), int(moves_length / 2))
+
+        a_moves = []
+        b_moves = []
+
+        for i in range(moves_length):
+            if i in crossover_indexes:
+                a_moves.append(self.ai_moves[i])
+                b_moves.append(parent.ai_moves[i])
+            else:
+                a_moves.append(parent.ai_moves[i])
+                b_moves.append(self.ai_moves[i])
+
+        print(self.ai_moves, parent.ai_moves)
+        print(a_moves, b_moves)
+
+        return [Player(True, a_moves), Player(True, b_moves)]
