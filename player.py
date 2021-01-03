@@ -3,6 +3,7 @@ import random
 from pygame.locals import *
 
 from constants import *
+from evolve import calculate_fitness
 from scenario import platforms_array, goal
 
 
@@ -20,10 +21,11 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0, 0)
 
         self.ai = ai
-        self.ai_moves = self.generate_moves(20)
+        self.ai_moves = self.generate_moves(NUMBER_OF_MOVES)
         self.ai_move = 0
         self.time = 0
         self.dead = False
+        self.best_fitness = float("inf")
 
     def update(self):
 
@@ -60,6 +62,10 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.death()
 
+        fitness = calculate_fitness(self)
+        if fitness < self.best_fitness:
+            self.best_fitness = fitness
+
     def handle_collision(self, direction):
         goal_collision = self.rect.collidelistall([goal])
         if goal_collision:
@@ -93,6 +99,8 @@ class Player(pygame.sprite.Sprite):
     def set_time(self, time):
         self.time = time
         self.ai_move = int(self.time / MOVE_DURATION)
+        if self.ai_move > NUMBER_OF_MOVES:
+            self.death()
 
     def generate_moves(self, number_of_moves):
         moves = []
@@ -100,26 +108,5 @@ class Player(pygame.sprite.Sprite):
             moves.append(random.randint(1, 5))
         return moves
 
-    def calculate_fitness(self):
-        player_pos = vec(self.rect.center)
-        return player_pos.distance_to(vec(goal.rect.center))
-
-    def crossover(self, parent):
-        moves_length = len(self.ai_moves)
-        crossover_indexes = random.sample(range(moves_length), int(moves_length / 2))
-
-        a_moves = []
-        b_moves = []
-
-        for i in range(moves_length):
-            if i in crossover_indexes:
-                a_moves.append(self.ai_moves[i])
-                b_moves.append(parent.ai_moves[i])
-            else:
-                a_moves.append(parent.ai_moves[i])
-                b_moves.append(self.ai_moves[i])
-
-        print(self.ai_moves, parent.ai_moves)
-        print(a_moves, b_moves)
-
-        return [Player(True, a_moves), Player(True, b_moves)]
+    def get_fitness(self):
+        return self.best_fitness

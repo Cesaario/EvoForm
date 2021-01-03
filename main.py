@@ -3,6 +3,7 @@ import sys
 from pygame.locals import *
 
 from constants import *
+from evolve import evolve
 from player import Player
 from scenario import platforms_array, goal
 
@@ -56,3 +57,12 @@ while True:
     for ai_player in players:
         ai_player.set_time(seconds)
         ai_player.update()
+
+    all_dead = True
+    for ai_player in players:
+        if not ai_player.dead:
+            all_dead = False
+
+    if all_dead:
+        players = evolve(players)
+        print("EVOLUCAO!!!!!")
