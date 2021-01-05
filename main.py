@@ -19,6 +19,8 @@ FramesPerSecond = pygame.time.Clock()
 display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("EvoForm")
 
+generation = 0
+
 players = []
 for i in range(10):
     ai_player = Player(True)
@@ -65,4 +67,7 @@ while True:
 
     if all_dead:
         players = evolve(players)
-        print("EVOLUCAO!!!!!")
+        generation += 1
+        all_dead = False
+        frames = 0
+        print("GENERATION: ", generation)

@@ -2,8 +2,8 @@ import random
 
 from pygame.locals import *
 
+import evolve
 from constants import *
-from evolve import calculate_fitness
 from scenario import platforms_array, goal
 
 
@@ -62,7 +62,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.death()
 
-        fitness = calculate_fitness(self)
+        fitness = evolve.calculate_fitness(self)
         if fitness < self.best_fitness:
             self.best_fitness = fitness
 
@@ -90,6 +90,7 @@ class Player(pygame.sprite.Sprite):
     def death(self):
         self.rect.bottomleft = vec((10, 385))
         self.dead = True
+        print("DEATH")
 
     def ai_movement(self):
         if self.ai and self.ai_move < len(self.ai_moves):
@@ -100,6 +101,7 @@ class Player(pygame.sprite.Sprite):
         self.time = time
         self.ai_move = int(self.time / MOVE_DURATION)
         if self.ai_move > NUMBER_OF_MOVES:
+            print("DEATH TIME")
             self.death()
 
     def generate_moves(self, number_of_moves):

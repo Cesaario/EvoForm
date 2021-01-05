@@ -39,5 +39,7 @@ def evolve(pop):
     new_pop = [*sorted_population[:-2], *children]
     for individual in new_pop:
         individual.dead = False
+        individual.ai_move = 0
+        individual.time = 0
 
     return new_pop
