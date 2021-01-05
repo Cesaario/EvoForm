@@ -22,7 +22,7 @@ pygame.display.set_caption("EvoForm")
 generation = 0
 
 players = []
-for i in range(10):
+for i in range(POPULATION_SIZE):
     ai_player = Player(True)
     players.append(ai_player)
 

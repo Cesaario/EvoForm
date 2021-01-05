@@ -25,8 +25,13 @@ def crossover(player_a, player_b):
             a_moves.append(player_b.ai_moves[i])
             b_moves.append(player_a.ai_moves[i])
 
-    print(player_a.ai_moves, player_b.ai_moves)
-    print(a_moves, b_moves)
+    for i in range(len(a_moves)):
+        if random.random() < POPULATION_SIZE:
+            a_moves[i] = random.randint(1, 5)
+
+    for i in range(len(b_moves)):
+        if random.random() < POPULATION_SIZE:
+            b_moves[i] = random.randint(1, 5)
 
     return [player.Player(True, a_moves), player.Player(True, b_moves)]
 
