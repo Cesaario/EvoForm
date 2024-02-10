@@ -69,7 +69,11 @@ class Player(pygame.sprite.Sprite):
     def handle_collision(self, direction):
         goal_collision = self.rect.collidelistall([goal])
         if goal_collision:
-            print("GOAL")
+            self.surf.fill((255, 0, 0))
+            self.vel.y = 0
+            while True:
+                print("GOAL!!!!!!!!!!!!!!!!!!!")
+
         for platform in [platforms_array[i] for i in self.rect.collidelistall(platforms_array)]:
             if direction == HORIZONTAL:
                 if self.vel.x > 0:

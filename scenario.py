@@ -17,6 +17,8 @@ platforms_array.append(Platform(gerar_dimensao(50, 200, 100)))
 platforms_array.append(Platform(gerar_dimensao(200, 325, 400)))
 platforms_array.append(Platform(gerar_dimensao(700, 400, 100)))
 
+platforms_array.append(Platform(gerar_dimensao(450, 200, 300)))
+
 goal = Goal(gerar_dimensao(730, 420, 50, 50))
 
 platforms = pygame.sprite.Group()
